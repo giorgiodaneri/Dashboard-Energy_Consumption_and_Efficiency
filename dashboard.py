@@ -7,10 +7,10 @@ from dash import Dash, html, dcc, Input, Output
 from plotly.graph_objs import *
 
 # BOX PLOT
-# tabella inerente a LCOE delle principali fonti energetiche di interesse
+# table inherent to LCOE of principal energy sources of interest
 df1 = pd.read_excel(r"C:/Users/giorg/Downloads/lcoe_definitive.xlsx")
 
-# vettore delle fonti
+# sources vector
 source = ['Coal', 'Gas Turbine', 'Nuclear', 'Hydro', 'SolarPV', 'WindOnShore']
 # vettore discount rates
 rate = ['0.03','0.04','0.05', '0.06', '0.07', '0.10']
@@ -19,7 +19,7 @@ rate = ['0.03','0.04','0.05', '0.06', '0.07', '0.10']
 # CHOROPLETH
 df = pd.read_excel(r"C:/Users/giorg/Downloads/energy_consumption_by_fuel.xlsx")
 # df.columns
-# creo vettore contenente nomi delle varie fonti energetiche, ovvero le colonne di df
+# create vector containing the names of the various energy sources, namely the columns of the data frame df 
 sources = [ 'Oil ','Natural Gas ', 'Coal ', 'Nuclear ', 'Hydro ', 'Renewables',
        'Oil variation', 'Natural Gas Variation',
        'Coal Variation', 'Nuclear Variation', 'Hydro Variation',
@@ -30,6 +30,7 @@ sources = [ 'Oil ','Natural Gas ', 'Coal ', 'Nuclear ', 'Hydro ', 'Renewables',
 
 # BAR CHART
 df6 = pd.read_excel(r"C:/Users/giorg/Downloads/EmissionsCO2.xlsx")
+# default value
 emission = 'Italy'
 
 
@@ -49,8 +50,9 @@ app.layout = html.Div([
         dcc.Dropdown(sources, 
             value = 'Natural Gas ',
             id = 'sources_input',
-            className='dropdown'),#class name per il binding con il css
-        html.Div([ #CHOROPLETH_GRAPH
+            className='dropdown'),  #class name for css file binding 
+        # CHOROPLETH_GRAPH
+        html.Div([ 
              dcc.Graph(id="choro_output"),
         ],id='choro'),
         html.P('Select the desired discount rate '),
@@ -61,8 +63,8 @@ app.layout = html.Div([
                 className='radio',
             ),
         ],id='radio'),
-        
-        html.Div([ #BOX PLOT GRAPH
+        # BOX PLOT GRAPH
+        html.Div([ 
             dcc.Graph(id="box_output")
         ],className='table'),
     ],id='left-container'),
@@ -72,7 +74,8 @@ app.layout = html.Div([
             value = 'country',
             id = 'country_input',
             className='dropdown'), 
-        html.Div([ #BARS GRAPH
+        #BARS GRAPH
+        html.Div([ 
              dcc.Graph(id="bar_output"),
         ],className='table'),
         html.P('Select the desired country to compare costs'),
@@ -80,7 +83,8 @@ app.layout = html.Div([
             value = 'United States of America',
             id = 'country1_input',
             className='dropdown'),
-        html.Div([ #SCATTER GRAPH
+        #SCATTER GRAPH
+        html.Div([ 
             dcc.Graph(id="scatter_output"),
         ],id='scatter'),
     ],id='right-container'),
@@ -102,16 +106,13 @@ def update_choropleth_output(source):
     geo_bgcolor='rgb(0, 0, 0)',
     )
     
-    # devo aggiornare valore unità di misura in base a input dell'utente
+    # need to update measurement unit based in user input
     unit = 'EJ '
     colorbar = 'Consumption '
     if source == 'Oil variation'or source =='Natural Gas Variation'or source == 'Coal Variation'or source == 'Nuclear Variation'or source == 'Hydro Variation'or source == 'Renewables Variation':
         unit = '% ' 
         colorbar = 'Variation '
 
-
-
-    
     fig = go.Figure(data=go.Choropleth(
         locations = df['Country'],
         locationmode = 'country names',
@@ -150,7 +151,7 @@ def update_choropleth_output(source):
         ),
     
 
-    # MAP RESHAPING
+    # MAP RESHAPING, need to make it bigger so it's more readable
     margin=dict(l=60, r=60, t=50, b=50)
     
     # annotations = [dict(
@@ -173,6 +174,8 @@ def update_choropleth_output(source):
 @app.callback(Output(component_id = 'box_output', component_property = 'figure'),
               Input(component_id = 'discount_input', component_property = 'value'))
 
+# represent LCOE values for different energy sources
+# user can select different DISCOUNT RATE values and confront the feasibility of different power plants
 def update_boxPlot_output(discount):
   colors = ['rgba(93, 164, 214, 0.8)', 'rgba(255, 144, 14, 0.8)', 'rgba(44, 160, 101, 0.8)',
     'rgba(255, 65, 54, 0.8)', 'rgba(207, 114, 255, 0.8)', 'rgba(127, 96, 0, 0.8)']
@@ -212,6 +215,7 @@ def update_boxPlot_output(discount):
 
   fig = go.Figure()
 
+  # add a trace to the box plot for every energy source in the dataset
   for xd, yd, cls in zip(source, lcoe, colors):
           fig.add_trace(go.Box(
               y=yd,
@@ -286,15 +290,15 @@ def update_boxPlot_output(discount):
               Input(component_id = 'country_input', component_property = 'value'))
 
 def update_barChart_output(country):
-    # seleziono solo righe corrispondenti a paesi di interesse
-    # tengo conto che utente puo selezionarne uno a sua scelta
+    # select only the rows corresponding to countries of interest
+    # user can add one more and confront it to those which have the biggest carbon footprint in terms of CO2 emissions
     countries = ['China', 'United States', 'India', 'Russia', 'Japan', 'Germany', 'Canada', 'Iran']
     countries.append(country)
     emissions = df6.loc[df6['Country'].isin(['China', 'United States', 'India', 'Russia', 'Japan', 'Germany', 'Canada', 'Iran', country])]
 
-    # faccio proiezione sulle due colonne di interesse
+    # project the data frame on the two columns on interest, which represent CO2 emissions PerCapita (more meaningful, normalized by popoulation value)
+    # and global share (bigger countries will have a bigger visual impact, may be misleading if their population is very high)
     emissions = emissions[["PerCapita", "Share"]]
-
 
     bar_data = go.Bar(
             x = countries,
@@ -427,7 +431,7 @@ def update_barChart_output(country):
               Input(component_id = 'discount_input', component_property = 'value'),
               Input(component_id = 'country1_input', component_property = 'value'))
 
-
+# LCOE values based on country ecosystem, legal advantages, economic and financial funding, public aids predisposed by the government 
 def update_scatter_output(discount_rate, country):
     fixed_discount = lcoe.loc[lcoe['DiscountRate'] == discount_rate]
     fixed_discount1 = fixed_discount.loc[fixed_discount['Country'] == country] 
