@@ -8,4 +8,4 @@ The dashboard consists of four graphs.
 - The scatter renders LCOE values based on the selected country. Each dot corresponds to a specific project, whose characteristics are shown in the hover text
 
 # How to make it work on your device
-First of all, you will need to change the path to the datasets in the Dashboard.py file with their actual location on your memory. Then you will probably need to adjust values in the css file to fit your monitor resolution. 
+First of all, you will need to change the path to the datasets in the Dashboard.py file with their actual location on your memory. Then you will probably need to adjust values in the css file in order to fit your monitor resolution. 
