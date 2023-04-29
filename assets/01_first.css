@@ -1,0 +1,86 @@
+P{
+  margin-left: 38%;
+  font-family: Arial;
+  font-weight: 700;
+  font-size: larger;
+  color: rgb(255, 255, 255);
+}
+H1{
+  margin-left: 33%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 300%;
+  color: whitesmoke;
+  margin-top: 3%;
+}
+#container {
+  width: 100vw;
+  height: 110vh; 
+  background-color: rgb(0, 0, 0);
+  /*font-size: 150%;*/
+  overflow: hidden;
+}
+#left-container {
+  height: 100vh;
+  width: 50vw;
+  float: left;
+  /*font-size: 150%;*/
+}
+#right-container {
+  margin-top: 1.7%;
+  margin-left: 50vw;
+  height: 100vh;
+  /*font-size: 150%;*/
+}
+#scatter{
+  margin-bottom: 10%;
+}
+.dropdown{
+  font-family: Arial, Helvetica, sans-serif;
+  margin-left: 10%;
+  margin-right:10%;
+  /*font-size: 130%;*/
+}
+.table{
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.radio{
+  margin-left: 10%;
+  /*font-size: 130%;*/
+}
+.dropdown {
+  margin-left: 26px;
+  margin-right: 26px;
+  margin-top: 5px;
+  /*font-size: 130%;*/
+}
+.dropdown .Select-control{
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+}
+.dropdown .Select-menu-outer{
+  background-color: rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+}
+.dropdown .Select-value{
+  background-color: #000000;
+  color: white;
+  font-size: 22px;  
+}
+.dropdown .VirtualizedSelectFocusedOption {
+  background-color: #206e55;
+  color: rgb(0, 0, 0);
+}
+.dropdown .Select-value-label {
+  color: rgb(255, 255, 255) !important;
+}
+.dropdown .VirtualizedSelectOption  {
+  font-size: 22px;
+  color: rgb(255, 255, 255);
+}
+#radio{
+  font-size: 24px;
+  margin-left: 30%;
+  color:white;
+}
